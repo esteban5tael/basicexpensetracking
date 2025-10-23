@@ -246,5 +246,31 @@
     "Movies, games, and leisure activities": "Películas, juegos y actividades de ocio",
     "Clothes and personal accessories": "Ropa y accesorios personales",
     "Money set aside for future use": "Dinero apartado para uso futuro",
-    "Sources of earnings and revenue": "Fuentes de ingresos y ganancias"
+    "Sources of earnings and revenue": "Fuentes de ingresos y ganancias",
+
+    "Category": "Categoría",
+    "Categories": "Categorías",
+    "Total Categories Registered": "Total de categorías registradas",
+
+    "Name": "Nombre",
+    "Description": "Descripción",
+    "Color": "Color",
+    "Active": "Activo",
+    "Created At": "Creado el",
+    "Updated At": "Actualizado el",
+    "Deleted At": "Eliminado el",
+    "Force Delete": "Forzar eliminación",
+
+    "Category Name": "Nombre de la Categoría",
+    "Enter the name of the category": "Ingresa el nombre de la categoría",
+    "Provide a detailed description for the category": "Proporciona una descripción detallada para la categoría",
+    "Category Settings": "Configuraciones de la Categoría",
+    "Configure the color and active status": "Configura el color y el estado activo",
+
+    "Category Information": "Información de la Categoría",
+    "View the basic details of the category": "Ve los detalles básicos de la categoría",
+    "Appearance and Status": "Apariencia y Estado",
+    "Check the color and active status of the category": "Verifica el color y el estado activo de la categoría",
+    "Timestamps": "Marcas de Tiempo",
+    "View creation, update, and deletion dates": "Ve las fechas de creación, actualización y eliminación"
 }
