@@ -41,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
             // ->brandName(__(config('app.name', 'Basic Expense Tracking')))
             ->brandLogo(asset('assets/img/logo.png'))
             ->brandLogoHeight("2.5rem")
-            ->topNavigation()
+            // ->topNavigation()
             // links de navegación en el menú
             ->navigationItems([
                 \Filament\Navigation\NavigationItem::make('WhatsApp')
@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-chat-bubble-bottom-center-text')
                     ->group(__('External Links'))
                     ->visible(function (): bool {
-                       return \Illuminate\Support\Facades\Auth::check();
+                        return \Illuminate\Support\Facades\Auth::check();
                     })
                     ->sort(99),
             ])
