@@ -36,6 +36,8 @@ class CategoriesTable
                 TextColumn::make('created_at')
                     ->label(__('Created At'))
                     ->dateTime()
+                    ->since()
+                    ->dateTooltip()
                     ->searchableAndSortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 

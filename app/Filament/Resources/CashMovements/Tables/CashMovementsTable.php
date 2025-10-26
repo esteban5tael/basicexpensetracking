@@ -18,46 +18,68 @@ class CashMovementsTable
             ->columns([
                 TextColumn::make('user.name')
                     ->searchable(),
+                    TextColumn::make('date')
+                    ->dateTime()
+                        ->since()
+                        ->dateTooltip()
+                        ->sortable(),
+
                 TextColumn::make('category.name')
                     ->searchable(),
+
                 TextColumn::make('parent.title')
                     ->searchable(),
+
                 TextColumn::make('type')
                     ->searchable(),
+
                 TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
+
                 TextColumn::make('title')
                     ->searchable(),
+
                 TextColumn::make('description')
                     ->searchable(),
-                TextColumn::make('date')
-                    ->date()
-                    ->sortable(),
+
+
                 IconColumn::make('is_recurrent')
                     ->boolean(),
+
                 TextColumn::make('recurrent_period')
                     ->searchable(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
+                        ->since()
+                        ->dateTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->dateTime()
+                        ->since()
+                        ->dateTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //
             ])
             ->recordActions([
                 ViewAction::make(),
+
                 EditAction::make(),
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+
                 ]),
+
             ]);
     }
 }
