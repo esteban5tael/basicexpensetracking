@@ -275,5 +275,27 @@
     "View creation, update, and deletion dates": "Ve las fechas de creación, actualización y eliminación",
     "Cash Movement": "Movimiento de Dinero",
     "Cash Movements": "Movimientos de Dinero",
-    "Total Cash Movements Registered": "Total de Movimientos de Dinero Registrados"
+    "Total Cash Movements Registered": "Total de Movimientos de Dinero Registrados",
+
+    "Date": "Fecha",
+    "Parent": "Padre",
+    "Type": "Tipo",
+    "Amount": "Monto",
+    "Title": "Título",
+    "Is Recurrent": "Es Recurrente",
+    "Recurrent Period": "Período Recurrente",
+
+    "daily": "diario",
+    "weekly": "semanal",
+    "monthly": "mensual",
+    "yearly": "anual",
+
+    "income": "ingreso",
+    "expense": "gasto",
+    "Movement Type": "Tipo de Movimiento",
+
+    "Category and Type": "Categoría y Tipo",
+    "Financial Details": "Detalles Financieros",
+    "Additional Information": "Información Adicional",
+    "Recurrence Settings": "Configuración de Recurrencia"
 }

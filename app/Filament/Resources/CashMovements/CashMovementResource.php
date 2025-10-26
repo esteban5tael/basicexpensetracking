@@ -15,6 +15,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class CashMovementResource extends Resource
 {
@@ -64,6 +66,17 @@ class CashMovementResource extends Resource
     }
 
     /*  Fin de Personalización  */
+
+    public static function getEloquentQuery(): Builder
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        $query = parent::getEloquentQuery();
+        if ($user && !$user->isAdmin()) {
+            $query->where('user_id', $user->id);
+        }
+        return $query;
+    }
 
     public static function form(Schema $schema): Schema
     {
