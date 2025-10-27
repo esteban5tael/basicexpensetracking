@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,7 +52,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function scopeIsAdmin():bool
+    public function cashMovements(): HasMany
+    {
+        return $this->hasMany(CashMovement::class);
+    }
+
+    public function scopeIsAdmin(): bool
     {
         return $this->role == Role::admin->value;
     }
@@ -61,14 +67,13 @@ class User extends Authenticatable
         return $query->where('role', Role::user->value);
     }
 
-    public function isAdmin():bool
+    public function isAdmin(): bool
     {
         return $this->role == Role::admin->value;
     }
 
-    public function isUser():bool
+    public function isUser(): bool
     {
         return $this->role == Role::user->value;
     }
-
 }
