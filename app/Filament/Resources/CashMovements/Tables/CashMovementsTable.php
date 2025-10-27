@@ -137,8 +137,6 @@ class CashMovementsTable
                     ViewAction::make()->url(fn($record) => CashMovementResource::getUrl('view', ['record' => $record]))->label(__('View')),
                     EditAction::make()->label(__('Edit')),
                     \Filament\Actions\DeleteAction::make()->label(__('Delete')),
-                    \Filament\Actions\RestoreAction::make()->label(__('Restore')),
-                    \Filament\Actions\ForceDeleteAction::make()->label(__('Force Delete')),
                 ]),
             ], position: \Filament\Tables\Enums\RecordActionsPosition::BeforeColumns)
             ->toolbarActions([
