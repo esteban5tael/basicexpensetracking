@@ -56,7 +56,13 @@ class CashMovementResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        if ($user && $user->isAdmin()) {
+            return static::getModel()::count();
+        } else {
+            return static::getModel()::where('user_id', $user->id)->count();
+        }
     }
 
     public static function getNavigationBadgeTooltip(): ?string

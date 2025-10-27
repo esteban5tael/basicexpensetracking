@@ -2,17 +2,24 @@
 
 namespace App\Filament\Resources\CashMovements\Tables;
 
-use App\Filament\Resources\CashMovements\CashMovementResource;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Tables\Table;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
-use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Support\Facades\Log;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\Summarizers\Summarizer;
+use App\Filament\Resources\CashMovements\CashMovementResource;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use  Illuminate\Database\Eloquent\Builder as FilterBuilder;
 
 class CashMovementsTable
 {
@@ -40,16 +47,34 @@ class CashMovementsTable
 
                 TextColumn::make('category.name')
                     ->label(__('Category'))
+                    ->formatStateUsing(fn($state, $record) => "<span style='background-color: {$record->category->color}; color: black; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;'>{$state}</span>")
+                    ->html()
                     ->searchableAndSortable(),
 
                 TextColumn::make('type')
                     ->label(__('Type'))
                     ->formatStateUsing(fn(string $state): string => __($state))
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'income' => 'success',
+                        'expense' => 'danger',
+                    })
                     ->searchableAndSortable(),
 
                 TextColumn::make('amount')
                     ->label(__('Amount'))
                     ->money('COP', decimalPlaces: 0)
+                    ->summarize([
+                        Sum::make()
+                            ->label('Total Ingresos')
+                            ->query(fn(Builder $query) => $query->where('type', 'income')),
+                        Sum::make()
+                            ->label('Total Gastos')
+                            ->query(fn(Builder $query) => $query->where('type', 'expense')),
+                        Summarizer::make()
+                            ->label('Diferencia (Ingresos - Gastos)')
+                            ->using(fn(Builder $query) => $query->sum(DB::raw("CASE WHEN type = 'income' THEN amount ELSE -amount END"))),
+                    ])
                     ->searchableAndSortable(),
 
                 TextColumn::make('title')
@@ -90,7 +115,22 @@ class CashMovementsTable
 
             ])
             ->filters([
-                //
+                Filter::make('date_range')
+                    ->schema([
+                        DatePicker::make('from_date')->label(__('From Date')),
+                        DatePicker::make('to_date')->label(__('To Date')),
+                    ])
+                    ->query(function (FilterBuilder $query, array $data): FilterBuilder {
+                        return $query
+                            ->when(
+                                $data['from_date'],
+                                fn(FilterBuilder $query, $date): FilterBuilder => $query->whereDate('date', '>=', $date),
+                            )
+                            ->when(
+                                $data['to_date'],
+                                fn(FilterBuilder $query, $date): FilterBuilder => $query->whereDate('date', '<=', $date),
+                            );
+                    }),
             ])
             ->recordActions([
                 \Filament\Actions\ActionGroup::make([

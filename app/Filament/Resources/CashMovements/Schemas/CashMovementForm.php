@@ -2,21 +2,25 @@
 
 namespace App\Filament\Resources\CashMovements\Schemas;
 
-use App\Enums\CashMovementRecurrentPeriod;
-use App\Enums\CashMovementType;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\ToggleButtons;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use App\Enums\CashMovementType;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\DatePicker;
+use App\Enums\CashMovementRecurrentPeriod;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Schemas\Components\Utilities\Get;
+use App\Filament\Resources\Categories\Schemas\CategoryForm;
+use Filament\Actions\Action;
 
 class CashMovementForm
 {
@@ -40,8 +44,16 @@ class CashMovementForm
                             ->schema([
                                 Select::make('category_id')
                                     ->label(__('Category'))
+                                    ->relationship('category', 'name')
                                     ->preload()->searchable()
-                                    ->relationship('category', 'name'),
+                                    ->createOptionForm(
+                                        self::categoryCreateOptionForm(),
+                                    )->createOptionAction(function (Action $action) {
+                                        return $action
+                                            ->modalHeading(__('Create Category'))
+                                            ->modalSubmitActionLabel(__('Create Category'))
+                                            ;
+                                    }),
 
                                 ToggleButtons::make('type')
 
@@ -120,5 +132,49 @@ class CashMovementForm
 
                     ])->columnSpanFull(),
             ]);
+    }
+
+    public static function categoryCreateOptionForm(): array
+    {
+        return
+            [
+
+                Section::make(__('Category Name'))
+                    ->icon('heroicon-o-tag')
+                    ->description(__('Enter the name of the category'))
+                    ->schema([
+
+                        TextInput::make('name')
+                            ->label(__('Name'))
+                            ->required(),
+                    ])->columns(1)->columnSpanFull(),
+
+                Section::make(__('Description'))
+                    ->icon('heroicon-o-document-text')
+                    ->description(__('Provide a detailed description for the category'))
+                    ->schema([
+                        MarkdownEditor::make('description')
+                            ->label(__('Description'))
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('categories/descriptions')
+                            ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg',])
+                            ->fileAttachmentsMaxSize(5120) // 5 MB
+                    ])->columns(1)->columnSpanFull(),
+
+                Section::make(__('Category Settings'))
+                    ->icon('heroicon-o-cog')
+                    ->description(__('Configure the color and active status'))
+                    ->schema([
+                        ColorPicker::make('color')
+                            ->label(__('Color'))
+                            ->required(),
+
+                        Toggle::make('is_active')
+                            ->label(__('Active'))
+                            ->required(),
+
+                    ])->columns(2)->columnSpanFull(),
+
+            ];
     }
 }
