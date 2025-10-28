@@ -13,7 +13,7 @@ class CashMovement extends Model
 {
 
     use HasFactory;
-    
+
     protected $fillable = [
         'user_id',
         'category_id',
@@ -144,5 +144,97 @@ class CashMovement extends Model
         }
 
         CashMovement::insert($children);
+    }
+
+    /**
+     * Suma total de ingresos en un rango de fechas opcional
+     *
+     * @param string|null $startDate Fecha inicial (formato Y-m-d)
+     * @param string|null $endDate Fecha final (formato Y-m-d)
+     * @return float
+     */
+    public function scopeTotalIncome($query, $startDate = null, $endDate = null)
+    {
+        $query = $query->where('type', CashMovementType::income->value);
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('date', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->where('date', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->where('date', '<=', $endDate);
+        }
+
+        return $query->sum('amount');
+    }
+
+    /**
+     * Suma total de gastos en un rango de fechas opcional
+     *
+     * @param string|null $startDate Fecha inicial (formato Y-m-d)
+     * @param string|null $endDate Fecha final (formato Y-m-d)
+     * @return float
+     */
+    public function scopeTotalExpense($query, $startDate = null, $endDate = null)
+    {
+        $query = $query->where('type', CashMovementType::expense->value);
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('date', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->where('date', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->where('date', '<=', $endDate);
+        }
+
+        return $query->sum('amount');
+    }
+
+    /**
+     * Calcula el balance (ingresos - gastos) en un rango de fechas opcional
+     *
+     * @param string|null $startDate Fecha inicial (formato Y-m-d)
+     * @param string|null $endDate Fecha final (formato Y-m-d)
+     * @return float
+     */
+    public function scopeBalance($query, $startDate = null, $endDate = null)
+    {
+        $incomeQuery = clone $query;
+        $expenseQuery = clone $query;
+
+        $totalIncome = $incomeQuery->totalIncome($startDate, $endDate);
+        $totalExpense = $expenseQuery->totalExpense($startDate, $endDate);
+
+        return $totalIncome - $totalExpense;
+    }
+
+    /**
+     * Obtiene el movimiento más antiguo
+     *
+     * @param \App\Models\User|null $user Usuario para filtrar (si no es admin)
+     * @return \App\Models\CashMovement|null
+     */
+    public static function getOldestMovement($user = null)
+    {
+        $query = self::query();
+        if ($user && !$user->isAdmin()) {
+            $query->where('user_id', $user->id);
+        }
+        return $query->orderBy('date', 'asc')->first();
+    }
+
+    /**
+     * Obtiene el movimiento más reciente
+     *
+     * @param \App\Models\User|null $user Usuario para filtrar (si no es admin)
+     * @return \App\Models\CashMovement|null
+     */
+    public static function getNewestMovement($user = null)
+    {
+        $query = self::query();
+        if ($user && !$user->isAdmin()) {
+            $query->where('user_id', $user->id);
+        }
+        return $query->orderBy('date', 'desc')->first();
     }
 }

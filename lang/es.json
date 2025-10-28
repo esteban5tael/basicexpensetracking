@@ -301,5 +301,13 @@
     "Create Category": "Crear Categoría",
     "cash movement": "movimiento de dinero",
     "Create Cash Movement": "Crear Movimiento de Dinero",
-    "User and Parent": "Usuario y Padre"
+    "User and Parent": "Usuario y Padre",
+    "Filter by Date Range": "Filtrar por Rango de Fechas",
+    "Start Date": "Fecha de Inicio",
+    "End Date": "Fecha de Fin",
+    "Income Total": "Total de Ingresos",
+    "Expense Total": "Total de Gastos",
+    "Difference (Income - Expense)": "Diferencia (Ingresos - Gastos)",
+    "Cash Movements Overview": "Resumen de Movimientos de Dinero"
+
 }

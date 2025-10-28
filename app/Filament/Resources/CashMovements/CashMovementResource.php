@@ -9,6 +9,7 @@ use App\Filament\Resources\CashMovements\Pages\ViewCashMovement;
 use App\Filament\Resources\CashMovements\Schemas\CashMovementForm;
 use App\Filament\Resources\CashMovements\Schemas\CashMovementInfolist;
 use App\Filament\Resources\CashMovements\Tables\CashMovementsTable;
+use App\Filament\Resources\CashMovements\Widgets\CashMovementsStatsOverviewWidget;
 use App\Models\CashMovement;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -113,6 +114,13 @@ class CashMovementResource extends Resource
             'create' => CreateCashMovement::route('/create'),
             'view' => ViewCashMovement::route('/{record}'),
             'edit' => EditCashMovement::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            // CashMovementsStatsOverviewWidget::class,
         ];
     }
 }
