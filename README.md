@@ -1,61 +1,208 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Basic Expense Tracking
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descripción del Proyecto
 
-## About Laravel
+Basic Expense Tracking es una aplicación web desarrollada con Laravel para el seguimiento básico de ingresos y gastos personales. Permite a los usuarios gestionar sus movimientos de efectivo, categorizarlos, y configurar movimientos recurrentes. La aplicación incluye un panel de administración construido con Filament para gestionar usuarios, categorías y movimientos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Características Principales
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   **Gestión de Usuarios**: Autenticación con roles (admin/usuario estándar)
+-   **Categorías**: Creación y gestión de categorías con colores personalizados
+-   **Movimientos de Efectivo**: Registro de ingresos y gastos con títulos, descripciones y fechas
+-   **Movimientos Recurrentes**: Soporte para movimientos diarios, semanales, mensuales o anuales
+-   **Panel de Administración**: Interfaz administrativa con Filament para gestión completa
+-   **Interfaz Moderna**: UI construida con Tailwind CSS y Alpine.js
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tecnologías Utilizadas
 
-## Learning Laravel
+-   **Backend**: Laravel 12.x
+-   **Frontend**: Tailwind CSS, Alpine.js, Vite
+-   **Base de Datos**: SQLite (configurable para MySQL/PostgreSQL)
+-   **Panel Admin**: Filament 4.x
+-   **Autenticación**: Laravel Breeze
+-   **Tests**: Pest PHP
+-   **Lenguaje**: PHP 8.2+
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Requisitos del Sistema
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   PHP >= 8.2
+-   Composer
+-   Node.js >= 18
+-   NPM o Yarn
+-   SQLite (o MySQL/PostgreSQL si se configura)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación
 
-## Laravel Sponsors
+### 1. Clonación del Repositorio
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/esteban5tael/basicexpensetracking.git
+cd basicexpensetracking
+```
 
-### Premium Partners
+### 2. Instalación de Dependencias
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Instala las dependencias de PHP con Composer:
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Instala las dependencias de JavaScript con NPM:
 
-## Code of Conduct
+```bash
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Configuración del Entorno
 
-## Security Vulnerabilities
+Copia el archivo de configuración de ejemplo:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+```
 
-## License
+Genera la clave de aplicación:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+### 4. Configuración de la Base de Datos
+
+Por defecto, la aplicación usa SQLite. Si deseas usar otra base de datos, modifica las variables en `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=tu_base_de_datos
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+```
+
+### 5. Migraciones de Base de Datos
+
+Ejecuta las migraciones para crear las tablas:
+
+```bash
+php artisan migrate
+```
+
+### 6. Seeders (Datos de Prueba)
+
+Ejecuta los seeders para poblar la base de datos con datos de ejemplo:
+
+```bash
+php artisan db:seed
+```
+
+Esto creará:
+
+-   Usuarios de prueba (incluyendo un admin)
+-   Categorías predefinidas (Alimentación, Transporte, Vivienda, etc.)
+-   Movimientos de efectivo de ejemplo (opcional, descomentado en DatabaseSeeder)
+
+### 7. Construcción de Assets
+
+Construye los assets del frontend:
+
+```bash
+npm run build
+```
+
+Para desarrollo con hot reload:
+
+```bash
+npm run dev
+```
+
+## Ejecución de la Aplicación
+
+### Modo Desarrollo
+
+Para ejecutar la aplicación en modo desarrollo con todos los servicios:
+
+```bash
+php artisan serve
+```
+
+Esto iniciará:
+
+-   Servidor de Laravel (http://localhost:8000)
+-   Queue worker
+-   Logs en tiempo real
+-   Vite dev server
+
+## Estructura de la Base de Datos
+
+### Tablas Principales
+
+-   **users**: Usuarios del sistema con roles (admin/user)
+-   **categories**: Categorías para clasificar movimientos (con colores y estado activo)
+-   **cash_movements**: Movimientos de efectivo (ingresos/gastos) con soporte para recurrentes
+
+### Enums
+
+-   **CashMovementType**: income/expense
+-   **CashMovementRecurrentPeriod**: daily/weekly/monthly/yearly
+-   **Role**: admin/user
+
+## Comandos Útiles
+
+### Setup Completo
+
+```bash
+composer run setup
+```
+
+Este comando ejecuta automáticamente:
+
+-   Instalación de dependencias PHP
+-   Copia de .env
+-   Generación de clave
+-   Migraciones
+-   Instalación de dependencias JS
+-   Build de assets
+
+### Limpieza de Cache
+
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+```
+
+### Generar Link de Storage (para archivos)
+
+```bash
+php artisan storage:link
+```
+
+## Panel de Administración (Filament)
+
+Accede al panel admin en `/admin` con credenciales de usuario admin.
+
+Funcionalidades del panel:
+
+-   Gestión de usuarios
+-   Gestión de categorías
+-   Gestión de movimientos de efectivo
+-   Dashboard con estadísticas
+
+## Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -am 'Agrega nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+## Soporte
+
+Para soporte o preguntas, abre un issue en el repositorio de GitHub.
