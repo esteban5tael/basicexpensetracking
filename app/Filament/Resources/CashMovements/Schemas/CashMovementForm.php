@@ -26,7 +26,10 @@ class CashMovementForm
 {
     public static function configure(Schema $schema): Schema
     {
-        $userId = Auth::id();
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        $userId = $user->id;
+        $isAdmin = $user->isAdmin();
         return $schema
             ->components([
                 Hidden::make('user_id')
@@ -46,14 +49,18 @@ class CashMovementForm
                                     ->label(__('Category'))
                                     ->relationship('category', 'name')
                                     ->preload()->searchable()
-                                    ->createOptionForm(
-                                        self::categoryCreateOptionForm(),
-                                    )->createOptionAction(function (Action $action) {
-                                        return $action
-                                            ->modalHeading(__('Create Category'))
-                                            ->modalSubmitActionLabel(__('Create Category'))
-                                            ;
-                                    }),
+                                    ->when(
+                                        $isAdmin,
+                                        fn($select) => $select
+                                            ->createOptionForm(
+                                                self::categoryCreateOptionForm(),
+                                            )->createOptionAction(function (Action $action) {
+                                                return $action
+                                                    ->modalHeading(__('Create Category'))
+                                                    ->modalSubmitActionLabel(__('Create Category'))
+                                                ;
+                                            })
+                                    ),
 
                                 ToggleButtons::make('type')
 

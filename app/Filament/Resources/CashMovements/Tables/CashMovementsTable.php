@@ -5,7 +5,8 @@ namespace App\Filament\Resources\CashMovements\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Illuminate\Support\Facades\Log;
+use Filament\Tables\Grouping\Group;
+
 use Illuminate\Support\Facades\Auth;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -66,13 +67,13 @@ class CashMovementsTable
                     ->money('COP', decimalPlaces: 0)
                     ->summarize([
                         Sum::make()
-                            ->label('Total Ingresos')
+                            ->label(__('Income Total'))
                             ->query(fn(Builder $query) => $query->where('type', 'income')),
                         Sum::make()
-                            ->label('Total Gastos')
+                            ->label(__('Expense Total'))
                             ->query(fn(Builder $query) => $query->where('type', 'expense')),
                         Summarizer::make()
-                            ->label('Diferencia (Ingresos - Gastos)')
+                            ->label(__('Difference (Income - Expense)'))
                             ->using(fn(Builder $query) => $query->sum(DB::raw("CASE WHEN type = 'income' THEN amount ELSE -amount END"))),
                     ])
                     ->searchableAndSortable(),
@@ -146,6 +147,13 @@ class CashMovementsTable
                     DeleteBulkAction::make(),
 
                 ]),
+            ])
+            ->groups([
+                Group::make('type')
+                    ->label(__('Type'))
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(true)
+                    ->getTitleFromRecordUsing(fn($record) => __($record->type)),
             ]);
     }
 }
